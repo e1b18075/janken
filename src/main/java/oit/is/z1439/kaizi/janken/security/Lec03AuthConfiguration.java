@@ -52,6 +52,13 @@ public class Lec03AuthConfiguration extends WebSecurityConfigurerAdapter {
     // antMatchers()の他にanyRequest()と書くとあらゆるアクセス先を表現できる
     // authenticated()の代わりにpermitAll()と書くと認証処理が不要であることを示す
     http.authorizeRequests().antMatchers("/lec02/**").authenticated();
+    /**
+     * 以下2行はh2-consoleを利用するための設定なので，開発が完了したらコメントアウトすることが望ましい
+     * CSRFがONになっているとフォームが対応していないためアクセスできない
+     * HTTPヘッダのX-Frame-OptionsがDENYになるとiframeでlocalhostでのアプリが使えなくなるので，H2DBのWebクライアントのためだけにdisableにする必要がある
+     */
+    http.csrf().disable();
+    http.headers().frameOptions().disable();
 
     // Spring Securityの機能を利用してログアウト．ログアウト時は http://localhost:8080/ に戻る
     http.logout().logoutSuccessUrl("/");
