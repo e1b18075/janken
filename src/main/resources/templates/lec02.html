@@ -8,15 +8,23 @@
 </head>
 
 <body>
-  <div th:if="${username}">
-    Hi [[${username}]]
+  <a href="/logout">ログアウト</a>
+
+  <div th:if="${entry}">
+    エントリー
+    <ul>
+      <li th:each="user : ${entry.users}">[[${user}]]</li>
+    </ul>
+  </div>
+  <p>
+  <div th:if="${login_user}">
+    Hi [[${login_user}]]
   </div>
 
-  <a href="/lec02_geam?jankenhand=0">ぐー</a>
-  <a href="/lec02_geam?jankenhand=1">ちょき</a>
-  <a href="/lec02_geam?jankenhand=2">ぱー</a>
+  <a href="/lec02/geam?jankenhand=0">ぐー</a>
+  <a href="/lec02/geam?jankenhand=1">ちょき</a>
+  <a href="/lec02/geam?jankenhand=2">ぱー</a>
 
-  <p>
   <div th:if="${my_hand}">
     あなたの手 [[${my_hand}]]
   </div>
@@ -28,7 +36,6 @@
   <div th:if="${Result}">
     結果 [[${Result}]]
   </div>
-
   </p>
 </body>
 
