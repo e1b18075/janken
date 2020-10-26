@@ -27,10 +27,13 @@ public class Lec03AuthConfiguration extends WebSecurityConfigurerAdapter {
         .password("$2y$10$3fXLs5lUlNUTXqa4kcnuguHrI2m2LwdPc5WtXvG4aPx.R9uyqtvuG").roles("USER");
     auth.inMemoryAuthentication().withUser("user2")
         .password("$2y$10$k7oaq61hj344mR.vDWUe6eXGbqQiexK0vJtAJTrqUXX4EFGizYORy").roles("USER");
+    auth.inMemoryAuthentication().withUser("ふくなが")
+        .password("$2y$10$0nTce6tUMMhBDBa1JU6N..JhZNONPAGtDBBAtAkG8hmKoqRoNVuhe").roles("USER");
 
     // 開発中は↓の書き方でも良いが，平文でパスワードが保存される
     // auth.inMemoryAuthentication().withUser("user1").password(passwordEncoder().encode("janken")).roles("USER");
     // auth.inMemoryAuthentication().withUser("user2").password(passwordEncoder().encode("password")).roles("USER");
+    // auth.inMemoryAuthentication().withUser("ふくなが").password(passwordEncoder().encode("janken")).roles("USER");
   }
 
   @Bean
