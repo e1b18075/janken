@@ -8,15 +8,15 @@ public class User {
     return name;
   }
 
-  public void setname(String name) {
+  public void setName(String name) {
     this.name = name;
   }
 
-  public int getid() {
+  public int getId() {
     return id;
   }
 
-  public void setid(int id) {
+  public void setId(int id) {
     this.id = id;
   }
 }

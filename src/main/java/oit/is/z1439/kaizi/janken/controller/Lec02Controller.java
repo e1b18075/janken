@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import oit.is.z1439.kaizi.janken.model.Janken;
@@ -34,10 +33,8 @@ public class Lec02Controller {
     this.entry.addUser(loginUser);
     model.addAttribute("entry", this.entry);
     model.addAttribute("login_user", loginUser);
-    ArrayList<User> users = userMapper.selectAllUsers();
-    ArrayList<Match> matches = matchMapper.selectAllMatches();
-    model.addAttribute("matches", matches);
-    model.addAttribute("users", users);
+    model.addAttribute("matches", matchMapper.selectAllMatches());
+    model.addAttribute("users", userMapper.selectAllUsers());
     return "lec02.html";
   }
 
@@ -51,9 +48,11 @@ public class Lec02Controller {
     return "lec02.html";
   }
 
-  @PostMapping("/lec02")
-  public String lec02(@RequestParam String username, ModelMap model) {
-    model.addAttribute("username", username);
-    return "lec02.html";
+  // matchのGetMapping
+  @GetMapping("/match")
+  public String match(@RequestParam Integer id, Principal prin, ModelMap model) {
+    model.addAttribute("user_name", prin.getName());
+    model.addAttribute("cpu_name", userMapper.selectAllUsers().get(id).getName());
+    return "match.html";
   }
 }
