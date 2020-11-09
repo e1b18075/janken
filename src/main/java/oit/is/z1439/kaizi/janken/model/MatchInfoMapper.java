@@ -6,15 +6,12 @@ import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-//select * from matches
 @Mapper
-public interface MatchMapper {
+public interface MatchInfoMapper {
+  @Select("SELECT * from match_info")
+  ArrayList<MatchInfo> selectAllMatchInfo();
 
-  @Select("SELECT * from matches")
-  ArrayList<Match> selectAllMatches();
-
-  @Insert("INSERT INTO matches (user_1,user_2,user_1_hand,user_2_hand,is_active) VALUES (#{user_1},#{user_2},#{user_1_hand},#{user_2_hand},#{is_active});")
+  @Insert("INSERT INTO matches (user_1,user_2,,is_active) VALUES (#{user_1},#{user_2},#{is_active});")
   @Options(useGeneratedKeys = true, keyColumn = "id", keyProperty = "id")
-  void insertMatch(Match match);
-
+  void insertMatchInfo(MatchInfo matchInfo);
 }
