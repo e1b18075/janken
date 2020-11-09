@@ -12,11 +12,11 @@ public class Janken {
   public String playerhand() {
     String hand = "";
     if (player == 0) {
-      hand = "グー";
+      hand = "Gu";
     } else if (player == 1) {
-      hand = "チョキ";
+      hand = "Choki";
     } else if (player == 2) {
-      hand = "パー";
+      hand = "Pa";
     }
     return hand;
   }
@@ -24,11 +24,11 @@ public class Janken {
   public String cpuhand() {
     String hand = "";
     if (cpu == 0) {
-      hand = "グー";
+      hand = "Gu";
     } else if (cpu == 1) {
-      hand = "チョキ";
+      hand = "Choki";
     } else if (cpu == 2) {
-      hand = "パー";
+      hand = "Pa";
     }
     return hand;
   }

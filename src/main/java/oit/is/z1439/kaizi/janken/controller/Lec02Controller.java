@@ -1,23 +1,22 @@
 package oit.is.z1439.kaizi.janken.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import oit.is.z1439.kaizi.janken.model.Janken;
 import oit.is.z1439.kaizi.janken.model.Entry;
-import oit.is.z1439.kaizi.janken.model.User;
 import oit.is.z1439.kaizi.janken.model.UserMapper;
 import oit.is.z1439.kaizi.janken.model.Match;
 import oit.is.z1439.kaizi.janken.model.MatchMapper;
 
 @Controller
 public class Lec02Controller {
-
+  private int user_id;
   @Autowired
   private Entry entry;
 
@@ -28,9 +27,12 @@ public class Lec02Controller {
   private MatchMapper matchMapper;
 
   @GetMapping("/lec02")
+  @Transactional
   public String lec02(Principal prin, ModelMap model) {
     String loginUser = prin.getName();
     this.entry.addUser(loginUser);
+    // データベースエラー
+    user_id = userMapper.selectIdByName(loginUser);
     model.addAttribute("entry", this.entry);
     model.addAttribute("login_user", loginUser);
     model.addAttribute("matches", matchMapper.selectAllMatches());
@@ -38,19 +40,45 @@ public class Lec02Controller {
     return "lec02.html";
   }
 
+  // matchのresultでlec02/geamリンクをGetMapping
   @GetMapping("/lec02/geam")
-  public String lec02_geam(@RequestParam Integer jankenhand, ModelMap model) {
+  @Transactional
 
+  public String lec02_geam(@RequestParam Integer cpu_id, @RequestParam Integer jankenhand, Principal prin,
+      ModelMap model) {
+    // jankenインスタンス
     Janken hand = new Janken(jankenhand);
-    model.addAttribute("my_hand", hand.playerhand());
-    model.addAttribute("your_hand", hand.cpuhand());
+    // Matchインスタンス
+    Match match = new Match();
+    String UserHand = hand.playerhand();
+    String CpuHand = hand.cpuhand();
+
+    // matchのsetUser保存
+    match.setUser_1(user_id);
+    match.setUser_2(cpu_id);
+    match.setUser_1_hand(UserHand);
+    match.setUser_2_hand(CpuHand);
+
+    // データベースに保存する
+    matchMapper.insertMatch(match);
+    model.addAttribute("cpu_id", cpu_id);
+    model.addAttribute("user_name", prin.getName());
+    model.addAttribute("cpu_name", userMapper.selectNameById(cpu_id));
+    // 自分の手
+    model.addAttribute("my_hand", UserHand);
+    // 相手の手
+    model.addAttribute("your_hand", CpuHand);
+    // 試合結果
     model.addAttribute("Result", hand.score());
-    return "lec02.html";
+    return "match.html";
   }
 
   // matchのGetMapping
   @GetMapping("/match")
+  @Transactional
   public String match(@RequestParam Integer id, Principal prin, ModelMap model) {
+    // cpu_idを追加する。
+    model.addAttribute("cpu_id", id);
     model.addAttribute("user_name", prin.getName());
     model.addAttribute("cpu_name", userMapper.selectAllUsers().get(id).getName());
     return "match.html";
